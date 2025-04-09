@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Similarity Search</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        background: #f8f9fa;
+      }
+      input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        margin-left: 8px;
+        cursor: pointer;
+      }
+      .result {
+        background: white;
+        padding: 15px;
+        margin-top: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+      .result img {
+        height: 50px;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      .result h3 {
+        margin: 0;
+      }
+      .meta {
+        color: gray;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 Company Similarity Search</h1>
+    <input
+      type="text"
+      id="queryInput"
+      placeholder="Type something like 'AI for education'..."
+    />
+    <button onclick="search()">Search</button>
+
+    <div id="results"></div>
+
+    <script>
+      async function search() {
+        const query = document.getElementById("queryInput").value.trim();
+        if (!query) return;
+
+        const response = await fetch("/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query }),
+        });
+
+        const results = await response.json();
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
+
+        if (results.length === 0) {
+          resultsDiv.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+
+        results.forEach((company) => {
+          const div = document.createElement("div");
+          div.className = "result";
+          div.innerHTML = `
+          <h3>
+            <img src="${company.image}" alt="${company.name}"/> 
+            ${company.rank}. ${company.name} <small>(${company.symbol})</small>
+          </h3>
+          <div class="meta">
+            📍 ${company.city}, ${company.state} | CEO: ${company.ceo} | Sector: ${company.sector} | 🔢 Score: ${company.score}
+          </div>
+          <p>${company.description}</p>
+          <a href="${company.website}" target="_blank">Visit Website 🔗</a>
+        `;
+          resultsDiv.appendChild(div);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+```Vector Similarity Search```
+    Cosine vs L2
+
+```"Smart Company Search"
+A Flask-based AI search app that finds companies based on meaning, not just keywords.```
+
+Made with ❤️ by Sayan Debnath
