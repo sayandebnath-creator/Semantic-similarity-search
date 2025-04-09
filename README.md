@@ -1,6 +1,6 @@
 # Semantic-similarity-search
 
-##Semantic understanding via embeddings (from embedder.py)
+Semantic understanding via embeddings (from embedder.py)
 
 Fast similarity matching via FAISS
 
